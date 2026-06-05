@@ -90,6 +90,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 .lst.sv{color:var(--gd);background:var(--gl)}
 .lbr{display:flex;gap:8px}
 .ibtn{background:none;border:1px solid var(--border);border-radius:6px;padding:5px;cursor:pointer;color:var(--muted);font-size:15px;display:flex;align-items:center}
+.ra{display:flex;gap:5px;flex-shrink:0}
 .mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:flex-end}
 .mo.open{display:flex}
 .mb{background:var(--surface);border-radius:var(--r) var(--r) 0 0;padding:20px;width:100%;max-height:90dvh;overflow-y:auto}
@@ -156,7 +157,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 <div id="pg-log" class="pg">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
     <div class="st" style="margin:0">ประวัติของ <span id="log-uname" style="color:var(--green)">--</span></div>
-    <button class="bsm" onclick="loadRecords()" style="background:var(--bl);color:var(--blue)"><i class="ti ti-refresh"></i>โหลดใหม่</button>
+    <div style="display:flex;gap:6px">
+      <button class="bsm" onclick="openAdd()" style="background:var(--green);color:#fff"><i class="ti ti-plus"></i>เพิ่ม</button>
+      <button class="bsm" onclick="loadRecords()" style="background:var(--bl);color:var(--blue)"><i class="ti ti-refresh"></i>โหลดใหม่</button>
+    </div>
   </div>
   <div id="log-list"><div class="loading">กำลังโหลด...</div></div>
 </div>
@@ -248,6 +252,37 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
   <button class="nb" id="nb-setup" onclick="switchTab('setup')"><i class="ti ti-settings"></i>ตั้งค่า</button>
 </nav>
 
+<!-- Edit Modal -->
+<div class="mo" id="edit-mo">
+  <div class="mb">
+    <h3 id="edit-title">แก้ไขข้อมูล</h3>
+    <input type="hidden" id="edit-idx"/>
+    <div class="ig">
+      <label>ประเภท</label>
+      <select id="edit-type" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);color:var(--text);font-size:15px">
+        <option value="in">เข้างาน</option>
+        <option value="out">ออกงาน</option>
+      </select>
+    </div>
+    <div class="ig"><label>วันที่และเวลา</label><input type="datetime-local" id="edit-dt" style="font-size:14px"/></div>
+    <div class="ig">
+      <label>สถานที่</label>
+      <select id="edit-loc" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);color:var(--text);font-size:15px">
+        <option value="">ไม่ระบุ</option>
+        <option value="a" id="edit-loc-a">ที่ทำงาน A</option>
+        <option value="b" id="edit-loc-b">ที่ทำงาน B</option>
+      </select>
+    </div>
+    <div class="ig"><label>GPS Latitude (ไม่บังคับ)</label><input type="number" id="edit-lat" placeholder="เช่น 13.756331" step="any" style="font-size:14px"/></div>
+    <div class="ig"><label>GPS Longitude (ไม่บังคับ)</label><input type="number" id="edit-lng" placeholder="เช่น 100.501762" step="any" style="font-size:14px"/></div>
+    <button class="bsm" onclick="useGPS()" style="background:var(--bl);color:var(--blue);width:100%;justify-content:center;margin-bottom:12px"><i class="ti ti-current-location"></i>ใช้ GPS ปัจจุบัน</button>
+    <div class="ma">
+      <button class="bcan" onclick="closeMo('edit-mo')">ยกเลิก</button>
+      <button style="flex:1;padding:12px;border-radius:var(--rs);border:none;font-size:15px;font-weight:600;cursor:pointer;background:var(--green);color:#fff" onclick="saveEdit()">บันทึก</button>
+    </div>
+  </div>
+</div>
+
 <!-- Confirm Modal -->
 <div class="mo" id="conf-mo">
   <div class="mb">
@@ -262,7 +297,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 
 <script>
 // ===== CONFIG =====
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyEll06g1UahomAAzSulWL622gm5qNJF8lVDgAwqIp7ljWV8a65XkdZgaewaf49oScLpg/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzlRoLVWeaG8vckMBWcNqELXFcsVqvH27zYxjcvjNqB-49dzM7Osj-F_RtBATEu_2Wxcg/exec';
 
 // ===== STATE =====
 const DAYS = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัส','ศุกร์','เสาร์'];
@@ -451,17 +486,120 @@ function renderLog(){
   const el=document.getElementById('log-list');
   if(!records.length){el.innerHTML='<div class="empty">ยังไม่มีข้อมูล</div>';return}
   const s=[...records].sort((a,b)=>b.ts.localeCompare(a.ts));
+  // update loc dropdowns
+  document.getElementById('edit-loc-a').textContent=lname('a')||'ที่ทำงาน A';
+  document.getElementById('edit-loc-b').textContent=lname('b')||'ที่ทำงาน B';
   el.innerHTML=s.map((r,i)=>{
     let dur='';
     if(r.type==='out'){const p=s.slice(i+1).find(x=>x.type==='in'&&x.ds===r.ds);if(p)dur=((new Date(r.ts)-new Date(p.ts))/3600000).toFixed(1)+' ชม.'}
     const ln=r.loc?lname(r.loc):'';
     const lb=ln?`<span class="bdg b${r.loc}" style="font-size:11px;padding:1px 8px">${ln}</span>`:'';
     const late=r.type==='in'&&r.lateMin!=null?(r.lateMin>0?`<span class="bdg blate" style="font-size:11px;padding:1px 8px">สาย ${r.lateMin}น.</span>`:`<span class="bdg bok" style="font-size:11px;padding:1px 8px">ตรงเวลา</span>`):'';
-    return`<div class="rec"><div class="rdot" style="background:${r.type==='in'?'var(--green)':'var(--red)'}"></div><div class="ri"><div class="rt">${r.type==='in'?'เข้างาน':'ออกงาน'}${lb}${late}</div><div class="rs">${r.ts.slice(0,16).replace('T',' ')}${dur?' · '+dur:''}</div></div></div>`;
+    return`<div class="rec"><div class="rdot" style="background:${r.type==='in'?'var(--green)':'var(--red)'}"></div><div class="ri"><div class="rt">${r.type==='in'?'เข้างาน':'ออกงาน'}${lb}${late}</div><div class="rs">${r.ts.slice(0,16).replace('T',' ')}${dur?' · '+dur:''}</div></div><div class="ra"><button class="ibtn" onclick="openEdit(${i})"><i class="ti ti-pencil"></i></button><button class="ibtn" onclick="confirmDel(${i})" style="color:var(--rd)"><i class="ti ti-trash"></i></button></div></div>`;
   }).join('');
 }
 
-// ===== SHIFT =====
+// ===== EDIT / DELETE =====
+let sortedCache = [];
+
+function openAdd(){
+  document.getElementById('edit-title').textContent='เพิ่มรายการใหม่';
+  document.getElementById('edit-idx').value='-1';
+  document.getElementById('edit-type').value='in';
+  const n=new Date();
+  document.getElementById('edit-dt').value=n.getFullYear()+'-'+pad(n.getMonth()+1)+'-'+pad(n.getDate())+'T'+pad(n.getHours())+':'+pad(n.getMinutes());
+  document.getElementById('edit-loc').value='';
+  document.getElementById('edit-lat').value='';
+  document.getElementById('edit-lng').value='';
+  document.getElementById('edit-loc-a').textContent=lname('a')||'ที่ทำงาน A';
+  document.getElementById('edit-loc-b').textContent=lname('b')||'ที่ทำงาน B';
+  document.getElementById('edit-mo').classList.add('open');
+}
+
+function openEdit(i){
+  const s=[...records].sort((a,b)=>b.ts.localeCompare(a.ts));
+  sortedCache=s;
+  const r=s[i];
+  document.getElementById('edit-title').textContent='แก้ไขข้อมูล';
+  document.getElementById('edit-idx').value=i;
+  document.getElementById('edit-type').value=r.type;
+  // convert ts to datetime-local format
+  const d=new Date(r.ts);
+  const local=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
+  document.getElementById('edit-dt').value=local;
+  document.getElementById('edit-loc').value=r.loc||'';
+  document.getElementById('edit-lat').value=r.lat||'';
+  document.getElementById('edit-lng').value=r.lng||'';
+  document.getElementById('edit-mo').classList.add('open');
+}
+
+function useGPS(){
+  if(!pos){showA('GPS ยังไม่พร้อม','err');return}
+  document.getElementById('edit-lat').value=pos.latitude.toFixed(6);
+  document.getElementById('edit-lng').value=pos.longitude.toFixed(6);
+}
+
+async function saveEdit(){
+  const i=parseInt(document.getElementById('edit-idx').value);
+  const type=document.getElementById('edit-type').value;
+  const dtVal=document.getElementById('edit-dt').value;
+  const loc=document.getElementById('edit-loc').value||'';
+  const lat=document.getElementById('edit-lat').value||'';
+  const lng=document.getElementById('edit-lng').value||'';
+  if(!dtVal){showA('กรุณาเลือกวันที่และเวลา','err');return}
+  const dt=new Date(dtVal);
+  const newTs=dt.getFullYear()+'-'+pad(dt.getMonth()+1)+'-'+pad(dt.getDate())+' '+pad(dt.getHours())+':'+pad(dt.getMinutes())+':00';
+  const newDs=dt.getFullYear()+'-'+pad(dt.getMonth()+1)+'-'+pad(dt.getDate());
+  let lateMin=null;
+  if(type==='in'){
+    const others=records.filter(x=>x.ds===newDs&&x.type==='in'&&(i>=0?x.ts!==sortedCache[i]?.ts:true));
+    if(others.length===0){const[sh,sm]=startTime.split(':').map(Number);lateMin=Math.max(0,dt.getHours()*60+dt.getMinutes()-sh*60-sm)}
+  }
+
+  if(i>=0){
+    // แก้ไขรายการเดิม
+    const r=sortedCache[i];
+    const idx=records.findIndex(x=>x.ts===r.ts&&x.type===r.type&&x.ds===r.ds);
+    if(idx>=0)records[idx]={...records[idx],ts:newTs,type,ds:newDs,loc:loc||null,lateMin};
+    try{
+      const url=`${SCRIPT_URL}?action=update&user=${encodeURIComponent(username)}&oldts=${encodeURIComponent(r.ts)}&newts=${encodeURIComponent(newTs)}&type=${type}&ds=${newDs}&loc=${encodeURIComponent(loc)}&lat=${lat}&lng=${lng}&lateMin=${lateMin!==null?lateMin:''}`;
+      await fetch(url);
+    }catch(e){}
+    showA('แก้ไขสำเร็จค่ะ','ok');
+  } else {
+    // เพิ่มรายการใหม่
+    const newRec={ts:newTs,type,ds:newDs,loc:loc||null,lat:lat||null,lng:lng||null,lateMin};
+    records.push(newRec);
+    try{
+      const url=`${SCRIPT_URL}?action=${type}&user=${encodeURIComponent(username)}&loc=${encodeURIComponent(loc)}&lat=${lat}&lng=${lng}&start=${encodeURIComponent(startTime)}&manualts=${encodeURIComponent(newTs)}`;
+      await fetch(url);
+    }catch(e){}
+    showA('เพิ่มรายการสำเร็จค่ะ','ok');
+  }
+
+  closeMo('edit-mo');
+  const s=[...records].sort((a,b)=>b.ts.localeCompare(a.ts));
+  isIn=s.length>0&&s[0].type==='in';
+  localStorage.setItem('wt_in',isIn?'1':'0');
+  updateUI();renderLog();renderShift();
+}
+
+function confirmDel(i){
+  const s=[...records].sort((a,b)=>b.ts.localeCompare(a.ts));
+  sortedCache=s;
+  const r=s[i];
+  document.getElementById('conf-title').textContent='ลบรายการ';
+  document.getElementById('conf-msg').textContent=`ยืนยันลบ "${r.type==='in'?'เข้างาน':'ออกงาน'}" วันที่ ${r.ts.slice(0,16)} ?`;
+  document.getElementById('conf-ok').onclick=async()=>{
+    records=records.filter(x=>!(x.ts===r.ts&&x.type===r.type&&x.ds===r.ds));
+    try{await fetch(`${SCRIPT_URL}?action=delete&user=${encodeURIComponent(username)}&ts=${encodeURIComponent(r.ts)}&type=${r.type}`)}catch(e){}
+    const sv=[...records].sort((a,b)=>b.ts.localeCompare(a.ts));
+    isIn=sv.length>0&&sv[0].type==='in';
+    localStorage.setItem('wt_in',isIn?'1':'0');
+    updateUI();renderLog();renderShift();closeMo('conf-mo');showA('ลบสำเร็จค่ะ','inf');
+  };
+  document.getElementById('conf-mo').classList.add('open');
+}
 function getShiftKey(ds){const[y,m,d]=ds.split('-').map(Number);if(d>=16){const nm=m===12?1:m+1,ny=m===12?y+1:y;return ny+'-'+pad(nm)}return y+'-'+pad(m)}
 function getShiftRange(key){const[y,m]=key.split('-').map(Number);const pm=m===1?12:m-1,py=m===1?y-1:y;return{s:new Date(py,pm-1,16),e:new Date(y,m-1,15,23,59,59)}}
 function shiftByOff(o){const b=getShiftKey(today());const[y,m]=b.split('-').map(Number);let nm=m+o,ny=y;while(nm>12){nm-=12;ny++}while(nm<1){nm+=12;ny--}return ny+'-'+pad(nm)}
