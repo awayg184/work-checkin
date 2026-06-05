@@ -206,12 +206,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
     <button class="btn btn-in" onclick="saveUsername()" style="margin-bottom:0"><i class="ti ti-device-floppy"></i>บันทึกชื่อ</button>
   </div>
 
-  <div class="sec-title">Google Apps Script URL</div>
-  <div class="card">
-    <div class="input-group">
-      <label>วาง Script URL ที่นี่</label>
-      <input type="text" id="script-url" placeholder="https://script.google.com/macros/s/.../exec" style="font-size:12px"/>
-    </div>
     <button class="btn btn-blue" onclick="saveScriptURL()" style="margin-bottom:0"><i class="ti ti-device-floppy"></i>บันทึก URL</button>
     <div style="font-size:12px;color:var(--green-dark);margin-top:8px" id="script-url-status"></div>
   </div>
@@ -297,7 +291,7 @@ const MONTHS_FULL=['มกราคม','กุมภาพันธ์','มี
 let locs      = JSON.parse(localStorage.getItem('wt_locs')||'{"a":null,"b":null}');
 let isIn      = localStorage.getItem('wt_in')==='1';
 let startTime = localStorage.getItem('wt_start')||'08:00';
-let scriptURL = localStorage.getItem('wt_script_url')||'';
+let scriptURL = 'https://script.google.com/macros/s/AKfycbyEll06g1UahomAAzSulWL622gm5qNJF8lVDgAwqIp7ljWV8a65XkdZgaewaf49oScLpg/exec'; // ฝัง URL ไว้แล้ว
 let username  = localStorage.getItem('wt_username')||'';
 let pos       = null;
 let shiftOffset = 0;
@@ -333,12 +327,9 @@ function saveUsername(){
   showAlert('บันทึกชื่อสำเร็จค่ะ','success');
 }
 
-function saveScriptURL(){
-  const url=document.getElementById('script-url').value.trim();
-  if(!url){showAlert('กรุณาใส่ URL','error');return}
   scriptURL=url;
   localStorage.setItem('wt_script_url',url);
-  document.getElementById('script-url-status').textContent='✓ บันทึกแล้ว';
+  
   updateShortcutURLs();
   showAlert('บันทึก URL สำเร็จ','success');
   loadRecords();
@@ -644,7 +635,7 @@ function initApp(){
   document.getElementById('username-display').textContent=username;
   document.getElementById('log-username').textContent=username;
   document.getElementById('setting-username').value=username;
-  if(scriptURL){document.getElementById('script-url').value=scriptURL;document.getElementById('script-url-status').textContent='✓ บันทึกแล้ว'}
+
   document.getElementById('start-time').value=startTime;
   if(locs.a){document.getElementById('name-a').value=locs.a.name||'';document.getElementById('rad-a').value=locs.a.radius||150;document.getElementById('rv-a').textContent=locs.a.radius||150}
   if(locs.b){document.getElementById('name-b').value=locs.b.name||'';document.getElementById('rad-b').value=locs.b.radius||150;document.getElementById('rv-b').textContent=locs.b.radius||150}
