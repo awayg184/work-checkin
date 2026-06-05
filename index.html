@@ -9,143 +9,117 @@
 <title>บันทึกเวลางาน</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.0.0/dist/tabler-icons.min.css"/>
 <style>
-:root{
-  --bg:#f5f5f0;--surface:#fff;--border:#e0ddd5;--text:#1a1a18;--muted:#888780;
-  --green:#1D9E75;--gl:#E1F5EE;--gd:#0F6E56;
-  --red:#D85A30;--rl:#FAECE7;--rd:#993C1D;
-  --blue:#185FA5;--bl:#E6F1FB;
-  --r:14px;--rs:9px;
-}
-@media(prefers-color-scheme:dark){:root{--bg:#1a1a18;--surface:#242422;--border:#333330;--text:#f0ede8;--muted:#888780}}
+:root{--bg:#f5f5f0;--sf:#fff;--bd:#e0ddd5;--tx:#1a1a18;--mu:#888780;--gn:#1D9E75;--gl:#E1F5EE;--gd:#0F6E56;--rd:#D85A30;--rl:#FAECE7;--rdark:#993C1D;--bl:#185FA5;--bll:#E6F1FB;--r:14px;--rs:9px}
+@media(prefers-color-scheme:dark){:root{--bg:#1a1a18;--sf:#242422;--bd:#333330;--tx:#f0ede8;--mu:#888780}}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;padding-bottom:80px}
-.hdr{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 18px 10px;position:sticky;top:0;z-index:10}
+body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;background:var(--bg);color:var(--tx);min-height:100dvh;padding-bottom:80px}
+.hdr{background:var(--sf);border-bottom:1px solid var(--bd);padding:14px 18px 10px;position:sticky;top:0;z-index:10}
 .hdr h1{font-size:18px;font-weight:600;display:flex;align-items:center;gap:8px}
-.hdr-sub{font-size:13px;color:var(--muted);margin-top:3px;display:flex;align-items:center;justify-content:space-between}
-.nav{position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--border);display:flex;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:10}
-.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;background:none;border:none;cursor:pointer;color:var(--muted);font-size:10px}
-.nb.active{color:var(--green)}
-.nb i{font-size:22px}
-.pg{padding:16px;display:none}
-.pg.active{display:block}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px;margin-bottom:14px}
+.hsub{font-size:13px;color:var(--mu);margin-top:3px;display:flex;align-items:center;justify-content:space-between}
+.nav{position:fixed;bottom:0;left:0;right:0;background:var(--sf);border-top:1px solid var(--bd);display:flex;padding:8px 0 calc(8px + env(safe-area-inset-bottom));z-index:10}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;background:none;border:none;cursor:pointer;color:var(--mu);font-size:10px}
+.nb.active{color:var(--gn)}.nb i{font-size:22px}
+.pg{padding:16px;display:none}.pg.active{display:block}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);padding:18px;margin-bottom:14px}
 .clk{font-size:42px;font-weight:300;text-align:center;letter-spacing:2px;font-variant-numeric:tabular-nums;margin:4px 0}
-.clk-date{font-size:13px;color:var(--muted);text-align:center;margin-bottom:14px}
-.ir{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border)}
-.ir:last-child{border-bottom:none}
-.ir>i{font-size:18px;color:var(--muted);flex-shrink:0}
-.il{font-size:11px;color:var(--muted)}
-.iv{font-size:14px;font-weight:500}
+.cdate{font-size:13px;color:var(--mu);text-align:center;margin-bottom:14px}
+.ir{display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--bd)}
+.ir:last-child{border-bottom:none}.ir>i{font-size:18px;color:var(--mu);flex-shrink:0}
+.il{font-size:11px;color:var(--mu)}.iv{font-size:14px;font-weight:500}
 .bdg{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500}
-.ba{background:var(--gl);color:var(--gd)}
-.bb{background:var(--bl);color:var(--blue)}
-.bn{background:#f0ede8;color:var(--muted)}
-.blate{background:var(--rl);color:var(--rd)}
-.bok{background:var(--gl);color:var(--gd)}
-.gbar{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:10px 14px;font-size:12px;color:var(--muted);display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.ba{background:var(--gl);color:var(--gd)}.bb{background:var(--bll);color:var(--bl)}
+.bn{background:#f0ede8;color:var(--mu)}.blate{background:var(--rl);color:var(--rdark)}.bok{background:var(--gl);color:var(--gd)}
+.gbar{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:10px 14px;font-size:12px;color:var(--mu);display:flex;align-items:center;gap:8px;margin-bottom:14px}
 .btn{width:100%;padding:15px;border-radius:var(--r);border:none;font-size:16px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:10px;transition:transform .1s}
-.btn:active{transform:scale(.97)}
-.btn:disabled{opacity:.35;cursor:not-allowed}
-.bi{background:var(--green);color:#fff}
-.bo{background:var(--red);color:#fff}
-.bblue{background:var(--blue);color:#fff}
+.btn:active{transform:scale(.97)}.btn:disabled{opacity:.35;cursor:not-allowed}
+.bgreen{background:var(--gn);color:#fff}.bred{background:var(--rd);color:#fff}.bblue{background:var(--bl);color:#fff}
 .bsm{padding:7px 14px;font-size:13px;border-radius:var(--rs);border:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px;font-weight:500}
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px}
 .sc{background:var(--bg);border-radius:var(--rs);padding:12px}
-.sl{font-size:11px;color:var(--muted);margin-bottom:4px}
-.sv{font-size:20px;font-weight:600}
-.sv.late{color:var(--rd)}
+.sl{font-size:11px;color:var(--mu);margin-bottom:4px}.sv{font-size:20px;font-weight:600}.sv.late{color:var(--rdark)}
 .alrt{padding:12px 16px;border-radius:var(--rs);font-size:14px;margin-bottom:14px;display:none}
-.alrt.ok{background:var(--gl);color:var(--gd)}
-.alrt.err{background:var(--rl);color:var(--rd)}
-.alrt.inf{background:var(--bl);color:var(--blue)}
-.st{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin:18px 0 8px}
-.rec{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid var(--border)}
+.alrt.ok{background:var(--gl);color:var(--gd)}.alrt.err{background:var(--rl);color:var(--rdark)}.alrt.inf{background:var(--bll);color:var(--bl)}
+.stitle{font-size:11px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.6px;margin:18px 0 8px}
+.rec{display:flex;align-items:flex-start;gap:10px;padding:12px 0;border-bottom:1px solid var(--bd)}
 .rec:last-child{border-bottom:none}
 .rdot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:4px}
-.ri{flex:1;min-width:0}
-.rt{font-size:13px;font-weight:500;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
-.rs{font-size:11px;color:var(--muted);margin-top:2px}
+.ri{flex:1;min-width:0}.rt{font-size:13px;font-weight:500;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.rs{font-size:11px;color:var(--mu);margin-top:2px}
+.ra{display:flex;gap:5px;flex-shrink:0}
+.ibtn{background:none;border:1px solid var(--bd);border-radius:6px;padding:5px;cursor:pointer;color:var(--mu);font-size:15px;display:flex;align-items:center}
 .mhdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
 .mnav{display:flex;align-items:center;gap:6px}
-.mnav button{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:6px 12px;cursor:pointer;color:var(--text);font-size:14px}
+.mnav button{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:6px 12px;cursor:pointer;color:var(--tx);font-size:14px}
 .mtit{font-size:15px;font-weight:600}
 .mg{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.mc{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:14px}
-.mcl{font-size:11px;color:var(--muted);margin-bottom:4px}
-.mcv{font-size:24px;font-weight:600}
-.mcv.late{color:var(--rd)}
+.mc{background:var(--sf);border:1px solid var(--bd);border-radius:var(--rs);padding:14px}
+.mcl{font-size:11px;color:var(--mu);margin-bottom:4px}.mcv{font-size:24px;font-weight:600}.mcv.late{color:var(--rdark)}
+.sp{background:var(--bll);color:var(--bl);font-size:12px;padding:8px 12px;border-radius:var(--rs);margin-bottom:14px;display:flex;align-items:center;gap:6px}
 .dt{width:100%;border-collapse:collapse}
-.dt th{font-size:11px;color:var(--muted);font-weight:500;padding:6px 4px;text-align:left;border-bottom:1px solid var(--border)}
-.dt td{font-size:12px;padding:8px 4px;border-bottom:1px solid var(--border);vertical-align:middle}
+.dt th{font-size:11px;color:var(--mu);font-weight:500;padding:6px 4px;text-align:left;border-bottom:1px solid var(--bd)}
+.dt td{font-size:12px;padding:8px 4px;border-bottom:1px solid var(--bd);vertical-align:middle}
 .dt tr:last-child td{border-bottom:none}
-.sp{background:var(--bl);color:var(--blue);font-size:12px;padding:8px 12px;border-radius:var(--rs);margin-bottom:14px;display:flex;align-items:center;gap:6px}
-.ig{margin-bottom:12px}
-.ig label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
-.ig input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);color:var(--text);font-size:15px}
+.ig{margin-bottom:12px}.ig label{display:block;font-size:12px;color:var(--mu);margin-bottom:5px}
+.ig input,.ig select{width:100%;padding:10px 12px;border:1px solid var(--bd);border-radius:var(--rs);background:var(--sf);color:var(--tx);font-size:15px}
 .ig input[type=range]{padding:0}
-.lc{border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:14px}
+.lc{border:1px solid var(--bd);border-radius:var(--r);padding:16px;margin-bottom:14px}
 .lch{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.lst{font-size:12px;padding:8px 10px;background:var(--bg);border-radius:var(--rs);line-height:1.6;color:var(--muted);margin-bottom:10px}
-.lst.sv{color:var(--gd);background:var(--gl)}
+.lst{font-size:12px;padding:8px 10px;background:var(--bg);border-radius:var(--rs);line-height:1.6;color:var(--mu);margin-bottom:10px}
+.lst.saved{color:var(--gd);background:var(--gl)}
 .lbr{display:flex;gap:8px}
-.ibtn{background:none;border:1px solid var(--border);border-radius:6px;padding:5px;cursor:pointer;color:var(--muted);font-size:15px;display:flex;align-items:center}
-.ra{display:flex;gap:5px;flex-shrink:0}
 .mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;align-items:flex-end}
 .mo.open{display:flex}
-.mb{background:var(--surface);border-radius:var(--r) var(--r) 0 0;padding:20px;width:100%;max-height:90dvh;overflow-y:auto}
+.mb{background:var(--sf);border-radius:var(--r) var(--r) 0 0;padding:20px;width:100%;max-height:90dvh;overflow-y:auto}
 .mb h3{font-size:17px;font-weight:600;margin-bottom:16px}
 .ma{display:flex;gap:10px;margin-top:16px}
 .ma button{flex:1;padding:12px;border-radius:var(--rs);border:none;font-size:15px;font-weight:600;cursor:pointer}
-.bcan{background:var(--bg);color:var(--text)}
-.bdel{background:var(--red);color:#fff}
+.bcan{background:var(--bg);color:var(--tx)}.bsave{background:var(--gn);color:#fff}.bdel{background:var(--rd);color:#fff}
 .uc{display:inline-flex;align-items:center;gap:6px;background:var(--gl);color:var(--gd);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:none}
 .lgs{display:none;position:fixed;inset:0;background:var(--bg);z-index:200;align-items:center;justify-content:center;padding:24px}
 .lgs.show{display:flex}
-.lgb{background:var(--surface);border-radius:var(--r);padding:28px;width:100%;max-width:380px;text-align:center}
+.lgb{background:var(--sf);border-radius:var(--r);padding:28px;width:100%;max-width:380px;text-align:center}
 .lgb h2{font-size:22px;font-weight:600;margin-bottom:8px}
-.lgb p{font-size:14px;color:var(--muted);margin-bottom:24px}
-.empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:14px;line-height:1.8}
-.loading{text-align:center;padding:30px;color:var(--muted);font-size:14px}
+.lgb p{font-size:14px;color:var(--mu);margin-bottom:24px}
+.empty{text-align:center;padding:40px 20px;color:var(--mu);font-size:14px;line-height:1.8}
+.loading{text-align:center;padding:30px;color:var(--mu);font-size:14px}
 </style>
 </head>
 <body>
 
-<!-- Login -->
 <div class="lgs" id="lgs">
   <div class="lgb">
-    <i class="ti ti-user-circle" style="font-size:52px;color:var(--green);margin-bottom:12px"></i>
+    <i class="ti ti-user-circle" style="font-size:52px;color:var(--gn);margin-bottom:12px"></i>
     <h2>บันทึกเวลางาน</h2>
     <p>ใส่ชื่อของคุณเพื่อเริ่มใช้งาน</p>
     <div class="ig" style="text-align:left">
       <label>ชื่อ-นามสกุล หรือรหัสพนักงาน</label>
       <input type="text" id="lg-name" placeholder="เช่น สมชาย ใจดี" style="font-size:16px"/>
     </div>
-    <button class="btn bi" onclick="doLogin()" style="margin-top:8px"><i class="ti ti-login"></i>เริ่มใช้งาน</button>
+    <button class="btn bgreen" onclick="doLogin()" style="margin-top:8px"><i class="ti ti-login"></i>เริ่มใช้งาน</button>
   </div>
 </div>
 
 <div class="hdr">
   <h1><i class="ti ti-map-pin"></i>บันทึกเวลางาน</h1>
-  <div class="hdr-sub">
+  <div class="hsub">
     <span id="live-date">--</span>
-    <button class="uc" id="uc" onclick="switchTab('setup')"><i class="ti ti-user"></i><span id="uname">--</span></button>
+    <button class="uc" onclick="switchTab('setup')"><i class="ti ti-user"></i><span id="uname">--</span></button>
   </div>
 </div>
 
 <div id="pg-home" class="pg active">
   <div class="card">
     <div class="clk" id="clk">--:--:--</div>
-    <div class="clk-date" id="clk-date">--</div>
-    <div class="ir"><i class="ti ti-circle-filled" id="st-ic" style="color:var(--muted)"></i><div><div class="il">สถานะ</div><div class="iv" id="st-txt">ยังไม่ได้เช็คอิน</div></div></div>
+    <div class="cdate" id="cdate">--</div>
+    <div class="ir"><i class="ti ti-circle-filled" id="st-ic" style="color:var(--mu)"></i><div><div class="il">สถานะ</div><div class="iv" id="st-txt">ยังไม่ได้เช็คอิน</div></div></div>
     <div class="ir"><i class="ti ti-building"></i><div><div class="il">ตำแหน่งปัจจุบัน</div><div id="loc-bdg"><span class="bdg bn">กำลังตรวจสอบ...</span></div></div></div>
     <div class="ir"><i class="ti ti-clock"></i><div><div class="il">เช็คอินล่าสุด</div><div class="iv" id="last-ci">-</div></div></div>
   </div>
   <div id="alrt" class="alrt"></div>
   <div class="gbar"><i class="ti ti-current-location"></i><span id="gps-txt">กำลังรอ GPS...</span></div>
-  <button class="btn bi" id="btn-in" onclick="checkIn()"><i class="ti ti-login"></i>เช็คอิน (เข้างาน)</button>
-  <button class="btn bo" id="btn-out" onclick="checkOut()" disabled><i class="ti ti-logout"></i>เช็คเอาท์ (ออกงาน)</button>
-  <div class="st">สรุปวันนี้</div>
+  <button class="btn bgreen" id="btn-in" onclick="checkIn()"><i class="ti ti-login"></i>เช็คอิน (เข้างาน)</button>
+  <button class="btn bred" id="btn-out" onclick="checkOut()" disabled><i class="ti ti-logout"></i>เช็คเอาท์ (ออกงาน)</button>
+  <div class="stitle">สรุปวันนี้</div>
   <div class="sg">
     <div class="sc"><div class="sl">เข้างาน</div><div class="sv" id="s-in">-</div></div>
     <div class="sc"><div class="sl">ออกงาน</div><div class="sv" id="s-out">-</div></div>
@@ -156,10 +130,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 
 <div id="pg-log" class="pg">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
-    <div class="st" style="margin:0">ประวัติของ <span id="log-uname" style="color:var(--green)">--</span></div>
+    <div class="stitle" style="margin:0">ประวัติของ <span id="log-uname" style="color:var(--gn)">--</span></div>
     <div style="display:flex;gap:6px">
-      <button class="bsm" onclick="openAdd()" style="background:var(--green);color:#fff"><i class="ti ti-plus"></i>เพิ่ม</button>
-      <button class="bsm" onclick="loadRecords()" style="background:var(--bl);color:var(--blue)"><i class="ti ti-refresh"></i>โหลดใหม่</button>
+      <button class="bsm bgreen" onclick="openAdd()"><i class="ti ti-plus"></i>เพิ่ม</button>
+      <button class="bsm" onclick="loadRecords()" style="background:var(--bll);color:var(--bl)"><i class="ti ti-refresh"></i>โหลด</button>
     </div>
   </div>
   <div id="log-list"><div class="loading">กำลังโหลด...</div></div>
@@ -176,7 +150,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
   </div>
   <div class="sp" id="sh-period"><i class="ti ti-calendar"></i><span></span></div>
   <div class="mg" id="m-sum"></div>
-  <div class="st">รายละเอียดรายวัน</div>
+  <div class="stitle">รายละเอียดรายวัน</div>
   <table class="dt">
     <thead><tr><th>วันที่</th><th>เข้า</th><th>ออก</th><th>ชม.</th><th>สาย</th></tr></thead>
     <tbody id="m-detail"></tbody>
@@ -184,63 +158,48 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 </div>
 
 <div id="pg-setup" class="pg">
-  <div class="st">ข้อมูลผู้ใช้</div>
+  <div class="stitle">ข้อมูลผู้ใช้</div>
   <div class="card">
-    <div class="ig">
-      <label>ชื่อ-นามสกุล หรือรหัสพนักงาน</label>
-      <input type="text" id="set-uname" placeholder="เช่น สมชาย ใจดี"/>
-    </div>
-    <button class="btn bi" onclick="saveUsername()" style="margin-bottom:0"><i class="ti ti-device-floppy"></i>บันทึกชื่อ</button>
+    <div class="ig"><label>ชื่อ-นามสกุล หรือรหัสพนักงาน</label><input type="text" id="set-uname" placeholder="เช่น สมชาย ใจดี"/></div>
+    <button class="btn bgreen" onclick="saveUsername()" style="margin-bottom:0"><i class="ti ti-device-floppy"></i>บันทึกชื่อ</button>
   </div>
-
-  <div class="st">เวลาเริ่มงาน</div>
+  <div class="stitle">เวลาเริ่มงาน</div>
   <div class="card">
-    <div class="ig" style="margin-bottom:0">
-      <label>เช็คอินหลังเวลานี้ถือว่ามาสาย</label>
-      <input type="time" id="set-start" value="08:00" onchange="saveStartTime()"/>
-    </div>
+    <div class="ig" style="margin-bottom:0"><label>เช็คอินหลังเวลานี้ถือว่ามาสาย</label><input type="time" id="set-start" value="08:00" onchange="saveStartTime()"/></div>
   </div>
-
-  <div class="st">สถานที่ทำงาน</div>
+  <div class="stitle">สถานที่ทำงาน</div>
   <div class="lc">
-    <div class="lch">
-      <span class="bdg ba" id="lbl-a">ที่ทำงาน A</span>
-      <button class="ibtn" id="del-a" onclick="confirmDelLoc('a')" style="display:none;color:var(--rd)"><i class="ti ti-trash"></i></button>
-    </div>
+    <div class="lch"><span class="bdg ba" id="lbl-a">ที่ทำงาน A</span><button class="ibtn" id="del-a" onclick="confirmDelLoc('a')" style="display:none;color:var(--rdark)"><i class="ti ti-trash"></i></button></div>
     <div class="ig"><label>ชื่อสถานที่</label><input type="text" id="nm-a" placeholder="เช่น สำนักงานใหญ่"/></div>
     <div class="ig"><label>รัศมี: <b id="rv-a">150</b> เมตร</label><input type="range" id="rad-a" min="50" max="500" value="150" oninput="document.getElementById('rv-a').textContent=this.value"/></div>
     <div class="lst" id="lst-a">ยังไม่ได้บันทึกตำแหน่ง</div>
     <div class="lbr">
-      <button class="bsm" onclick="saveLocGPS('a')" style="background:var(--green);color:#fff;flex:1"><i class="ti ti-current-location"></i>บันทึก GPS</button>
-      <button class="bsm" onclick="saveLocName('a')" style="background:var(--bl);color:var(--blue);flex:1"><i class="ti ti-device-floppy"></i>บันทึกชื่อ</button>
+      <button class="bsm bgreen" onclick="saveLocGPS('a')" style="flex:1"><i class="ti ti-current-location"></i>บันทึก GPS</button>
+      <button class="bsm" onclick="saveLocName('a')" style="background:var(--bll);color:var(--bl);flex:1"><i class="ti ti-device-floppy"></i>บันทึกชื่อ</button>
     </div>
   </div>
   <div class="lc">
-    <div class="lch">
-      <span class="bdg bb" id="lbl-b">ที่ทำงาน B</span>
-      <button class="ibtn" id="del-b" onclick="confirmDelLoc('b')" style="display:none;color:var(--rd)"><i class="ti ti-trash"></i></button>
-    </div>
+    <div class="lch"><span class="bdg bb" id="lbl-b">ที่ทำงาน B</span><button class="ibtn" id="del-b" onclick="confirmDelLoc('b')" style="display:none;color:var(--rdark)"><i class="ti ti-trash"></i></button></div>
     <div class="ig"><label>ชื่อสถานที่</label><input type="text" id="nm-b" placeholder="เช่น สาขา"/></div>
     <div class="ig"><label>รัศมี: <b id="rv-b">150</b> เมตร</label><input type="range" id="rad-b" min="50" max="500" value="150" oninput="document.getElementById('rv-b').textContent=this.value"/></div>
     <div class="lst" id="lst-b">ยังไม่ได้บันทึกตำแหน่ง</div>
     <div class="lbr">
-      <button class="bsm" onclick="saveLocGPS('b')" style="background:var(--blue);color:#fff;flex:1"><i class="ti ti-current-location"></i>บันทึก GPS</button>
-      <button class="bsm" onclick="saveLocName('b')" style="background:var(--bl);color:var(--blue);flex:1"><i class="ti ti-device-floppy"></i>บันทึกชื่อ</button>
+      <button class="bsm bblue" onclick="saveLocGPS('b')" style="flex:1"><i class="ti ti-current-location"></i>บันทึก GPS</button>
+      <button class="bsm" onclick="saveLocName('b')" style="background:var(--bll);color:var(--bl);flex:1"><i class="ti ti-device-floppy"></i>บันทึกชื่อ</button>
     </div>
   </div>
-
-  <div class="st">Shortcuts URLs</div>
+  <div class="stitle">Shortcuts URLs</div>
   <div class="card">
-    <p style="font-size:13px;color:var(--muted);margin-bottom:12px">ใช้ "รับส่วนประกอบของ URL" ใน Shortcuts ค่ะ</p>
+    <p style="font-size:13px;color:var(--mu);margin-bottom:12px">ใช้ "รับส่วนประกอบของ URL" ใน Shortcuts</p>
     <div style="margin-bottom:12px">
       <div style="font-size:13px;font-weight:500;margin-bottom:4px">URL เข้างาน</div>
-      <div id="url-in" style="background:var(--bg);border-radius:var(--rs);padding:10px;font-size:11px;color:var(--blue);word-break:break-all">--</div>
-      <button onclick="copyURL('in')" style="font-size:12px;color:var(--blue);background:none;border:none;cursor:pointer;padding:4px 0;display:flex;align-items:center;gap:4px;margin-top:4px"><i class="ti ti-copy"></i>คัดลอก</button>
+      <div id="url-in" style="background:var(--bg);border-radius:var(--rs);padding:10px;font-size:11px;color:var(--bl);word-break:break-all">--</div>
+      <button onclick="copyURL('in')" style="font-size:12px;color:var(--bl);background:none;border:none;cursor:pointer;padding:4px 0;display:flex;align-items:center;gap:4px;margin-top:4px"><i class="ti ti-copy"></i>คัดลอก</button>
     </div>
     <div>
       <div style="font-size:13px;font-weight:500;margin-bottom:4px">URL ออกงาน</div>
-      <div id="url-out" style="background:var(--bg);border-radius:var(--rs);padding:10px;font-size:11px;color:var(--blue);word-break:break-all">--</div>
-      <button onclick="copyURL('out')" style="font-size:12px;color:var(--blue);background:none;border:none;cursor:pointer;padding:4px 0;display:flex;align-items:center;gap:4px;margin-top:4px"><i class="ti ti-copy"></i>คัดลอก</button>
+      <div id="url-out" style="background:var(--bg);border-radius:var(--rs);padding:10px;font-size:11px;color:var(--bl);word-break:break-all">--</div>
+      <button onclick="copyURL('out')" style="font-size:12px;color:var(--bl);background:none;border:none;cursor:pointer;padding:4px 0;display:flex;align-items:center;gap:4px;margin-top:4px"><i class="ti ti-copy"></i>คัดลอก</button>
     </div>
   </div>
 </div>
@@ -252,33 +211,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
   <button class="nb" id="nb-setup" onclick="switchTab('setup')"><i class="ti ti-settings"></i>ตั้งค่า</button>
 </nav>
 
-<!-- Edit Modal -->
+<!-- Edit/Add Modal -->
 <div class="mo" id="edit-mo">
   <div class="mb">
     <h3 id="edit-title">แก้ไขข้อมูล</h3>
-    <input type="hidden" id="edit-idx"/>
+    <input type="hidden" id="edit-idx" value="-1"/>
     <div class="ig">
       <label>ประเภท</label>
-      <select id="edit-type" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);color:var(--text);font-size:15px">
+      <select id="edit-type">
         <option value="in">เข้างาน</option>
         <option value="out">ออกงาน</option>
       </select>
     </div>
-    <div class="ig"><label>วันที่และเวลา</label><input type="datetime-local" id="edit-dt" style="font-size:14px"/></div>
+    <div class="ig"><label>วันที่และเวลา</label><input type="datetime-local" id="edit-dt"/></div>
     <div class="ig">
       <label>สถานที่</label>
-      <select id="edit-loc" style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);color:var(--text);font-size:15px">
+      <select id="edit-loc">
         <option value="">ไม่ระบุ</option>
-        <option value="a" id="edit-loc-a">ที่ทำงาน A</option>
-        <option value="b" id="edit-loc-b">ที่ทำงาน B</option>
+        <option value="a" id="opt-a">ที่ทำงาน A</option>
+        <option value="b" id="opt-b">ที่ทำงาน B</option>
       </select>
     </div>
-    <div class="ig"><label>GPS Latitude (ไม่บังคับ)</label><input type="number" id="edit-lat" placeholder="เช่น 13.756331" step="any" style="font-size:14px"/></div>
-    <div class="ig"><label>GPS Longitude (ไม่บังคับ)</label><input type="number" id="edit-lng" placeholder="เช่น 100.501762" step="any" style="font-size:14px"/></div>
-    <button class="bsm" onclick="useGPS()" style="background:var(--bl);color:var(--blue);width:100%;justify-content:center;margin-bottom:12px"><i class="ti ti-current-location"></i>ใช้ GPS ปัจจุบัน</button>
+    <div class="ig"><label>GPS Latitude (ไม่บังคับ)</label><input type="number" id="edit-lat" placeholder="เช่น 13.756331" step="any"/></div>
+    <div class="ig"><label>GPS Longitude (ไม่บังคับ)</label><input type="number" id="edit-lng" placeholder="เช่น 100.501762" step="any"/></div>
+    <button class="bsm" onclick="useGPS()" style="background:var(--bll);color:var(--bl);width:100%;justify-content:center;margin-bottom:12px"><i class="ti ti-current-location"></i>ใช้ GPS ปัจจุบัน</button>
     <div class="ma">
       <button class="bcan" onclick="closeMo('edit-mo')">ยกเลิก</button>
-      <button style="flex:1;padding:12px;border-radius:var(--rs);border:none;font-size:15px;font-weight:600;cursor:pointer;background:var(--green);color:#fff" onclick="saveEdit()">บันทึก</button>
+      <button class="bsave" onclick="saveEdit()">บันทึก</button>
     </div>
   </div>
 </div>
@@ -287,7 +246,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 <div class="mo" id="conf-mo">
   <div class="mb">
     <h3 id="conf-title">ยืนยัน</h3>
-    <p id="conf-msg" style="font-size:14px;color:var(--muted);margin-bottom:16px"></p>
+    <p id="conf-msg" style="font-size:14px;color:var(--mu);margin-bottom:16px"></p>
     <div class="ma">
       <button class="bcan" onclick="closeMo('conf-mo')">ยกเลิก</button>
       <button class="bdel" id="conf-ok">ลบ</button>
@@ -296,28 +255,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;ba
 </div>
 
 <script>
-// ===== CONFIG =====
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzlRoLVWeaG8vckMBWcNqELXFcsVqvH27zYxjcvjNqB-49dzM7Osj-F_RtBATEu_2Wxcg/exec';
+const SCRIPT_URL='https://script.google.com/macros/s/AKfycbzlRoLVWeaG8vckMBWcNqELXFcsVqvH27zYxjcvjNqB-49dzM7Osj-F_RtBATEu_2Wxcg/exec';
+const DAYS=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัส','ศุกร์','เสาร์'];
+const MS=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const MF=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
 
-// ===== STATE =====
-const DAYS = ['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัส','ศุกร์','เสาร์'];
-const MS = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
-const MF = ['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
-
-let locs      = JSON.parse(localStorage.getItem('wt_locs') || '{"a":null,"b":null}');
-let isIn      = localStorage.getItem('wt_in') === '1';
-let startTime = localStorage.getItem('wt_start') || '08:00';
-let username  = localStorage.getItem('wt_username') || '';
-let pos       = null;
-let shiftOff  = 0;
-let records   = [];
+let locs=JSON.parse(localStorage.getItem('wt_locs')||'{"a":null,"b":null}');
+let isIn=localStorage.getItem('wt_in')==='1';
+let startTime=localStorage.getItem('wt_start')||'08:00';
+let username=localStorage.getItem('wt_username')||'';
+let pos=null,shiftOff=0,records=[],sortedCache=[];
 
 function pad(n){return String(n).padStart(2,'0')}
-function fmtT(ts){return String(ts).slice(11,16)}
+// Safari รองรับ "2026-06-05T08:00:00" แต่ไม่รองรับ "2026-06-05 08:00:00"
+function parseTs(ts){return new Date(String(ts).replace(' ','T'))}
+function fmtT(ts){const d=parseTs(ts);return pad(d.getHours())+':'+pad(d.getMinutes())}
+function toLocalDT(ts){const d=parseTs(ts);return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes())}
 function today(){const n=new Date();return n.getFullYear()+'-'+pad(n.getMonth()+1)+'-'+pad(n.getDate())}
 function lname(k){if(!k)return'';return locs[k]?.name||(k==='a'?'ที่ทำงาน A':'ที่ทำงาน B')}
 
-// ===== LOGIN =====
+// LOGIN
 function doLogin(){
   const n=document.getElementById('lg-name').value.trim();
   if(!n){alert('กรุณาใส่ชื่อค่ะ');return}
@@ -326,7 +283,7 @@ function doLogin(){
   initApp();
 }
 
-// ===== SETTINGS =====
+// SETTINGS
 function saveUsername(){
   const n=document.getElementById('set-uname').value.trim();
   if(!n){showA('กรุณาใส่ชื่อค่ะ','err');return}
@@ -335,138 +292,103 @@ function saveUsername(){
   document.getElementById('log-uname').textContent=n;
   updateURLs();showA('บันทึกชื่อสำเร็จค่ะ','ok');
 }
-function saveStartTime(){
-  startTime=document.getElementById('set-start').value;
-  localStorage.setItem('wt_start',startTime);
-  showA('บันทึกเวลาเริ่มงาน '+startTime+' แล้ว','ok');
-}
+function saveStartTime(){startTime=document.getElementById('set-start').value;localStorage.setItem('wt_start',startTime);showA('บันทึกเวลาเริ่มงานแล้วค่ะ','ok')}
 function updateURLs(){
-  const base=SCRIPT_URL+'?user='+encodeURIComponent(username)+'&start='+encodeURIComponent(startTime);
-  document.getElementById('url-in').textContent=base+'&action=in';
-  document.getElementById('url-out').textContent=base+'&action=out';
+  const b=SCRIPT_URL+'?user='+encodeURIComponent(username)+'&start='+encodeURIComponent(startTime);
+  document.getElementById('url-in').textContent=b+'&action=in';
+  document.getElementById('url-out').textContent=b+'&action=out';
 }
-function copyURL(t){
-  navigator.clipboard.writeText(document.getElementById('url-'+t).textContent)
-    .then(()=>showA('คัดลอก URL แล้ว','ok'));
-}
+function copyURL(t){navigator.clipboard.writeText(document.getElementById('url-'+t).textContent).then(()=>showA('คัดลอกแล้ว','ok'))}
 
-// ===== GPS =====
-function hav(a,b,c,d){
-  const R=6371000,dA=(c-a)*Math.PI/180,dB=(d-b)*Math.PI/180;
-  const x=Math.sin(dA/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dB/2)**2;
-  return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));
-}
-function detLoc(){
-  if(!pos)return null;
-  for(const k of['a','b']){if(locs[k]?.lat!=null){if(hav(pos.latitude,pos.longitude,locs[k].lat,locs[k].lng)<=locs[k].radius)return k}}
-  return null;
-}
+// GPS
+function hav(a,b,c,d){const R=6371000,dA=(c-a)*Math.PI/180,dB=(d-b)*Math.PI/180;const x=Math.sin(dA/2)**2+Math.cos(a*Math.PI/180)*Math.cos(c*Math.PI/180)*Math.sin(dB/2)**2;return R*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x))}
+function detLoc(){if(!pos)return null;for(const k of['a','b']){if(locs[k]?.lat!=null&&hav(pos.latitude,pos.longitude,locs[k].lat,locs[k].lng)<=locs[k].radius)return k}return null}
 function updateGPS(){
   if(!navigator.geolocation){document.getElementById('gps-txt').textContent='GPS ไม่รองรับ';return}
   navigator.geolocation.getCurrentPosition(p=>{
-    pos=p.coords;
-    const k=detLoc();
+    pos=p.coords;const k=detLoc();
     let msg='GPS พร้อม';
     for(const lk of['a','b']){if(locs[lk]?.lat!=null){const d=Math.round(hav(pos.latitude,pos.longitude,locs[lk].lat,locs[lk].lng));msg+=' · '+lname(lk)+' '+d+'ม.'}}
     if(!locs.a&&!locs.b)msg+=' · ยังไม่ได้ตั้งค่าที่ทำงาน';
     document.getElementById('gps-txt').textContent=msg;
-    document.getElementById('loc-bdg').innerHTML=k
-      ?`<span class="bdg b${k}">${lname(k)}</span>`
-      :`<span class="bdg bn">นอกรัศมีที่ทำงาน</span>`;
+    document.getElementById('loc-bdg').innerHTML=k?`<span class="bdg b${k}">${lname(k)}</span>`:`<span class="bdg bn">นอกรัศมีที่ทำงาน</span>`;
   },()=>{document.getElementById('gps-txt').textContent='ไม่ได้รับ GPS — กรุณาอนุญาตตำแหน่ง'});
 }
 
-// ===== LOC MANAGEMENT =====
+// LOC
 function saveLocGPS(k){
   if(!pos){showA('กรุณารอ GPS ให้พร้อมก่อน','err');return}
   const n=document.getElementById('nm-'+k).value||(k==='a'?'ที่ทำงาน A':'ที่ทำงาน B');
   const r=parseInt(document.getElementById('rad-'+k).value);
   locs[k]={lat:pos.latitude,lng:pos.longitude,name:n,radius:r};
-  localStorage.setItem('wt_locs',JSON.stringify(locs));
-  refreshLocs();updateGPS();showA('บันทึก GPS '+n+' สำเร็จ','ok');
+  localStorage.setItem('wt_locs',JSON.stringify(locs));refreshLocs();updateGPS();showA('บันทึก GPS '+n+' สำเร็จ','ok');
 }
 function saveLocName(k){
   const n=document.getElementById('nm-'+k).value.trim();
   if(!n){showA('กรุณาใส่ชื่อ','err');return}
   const r=parseInt(document.getElementById('rad-'+k).value);
   locs[k]=locs[k]?{...locs[k],name:n,radius:r}:{lat:null,lng:null,name:n,radius:r};
-  localStorage.setItem('wt_locs',JSON.stringify(locs));
-  refreshLocs();showA('อัปเดตชื่อสำเร็จ','ok');
+  localStorage.setItem('wt_locs',JSON.stringify(locs));refreshLocs();showA('อัปเดตชื่อสำเร็จ','ok');
 }
 function confirmDelLoc(k){
   document.getElementById('conf-title').textContent='ลบสถานที่';
   document.getElementById('conf-msg').textContent='ลบข้อมูล GPS ของ "'+lname(k)+'" ?';
   document.getElementById('conf-ok').onclick=()=>{
-    locs[k]=null;
-    document.getElementById('nm-'+k).value='';
-    document.getElementById('rad-'+k).value=150;
-    document.getElementById('rv-'+k).textContent=150;
-    localStorage.setItem('wt_locs',JSON.stringify(locs));
-    refreshLocs();updateGPS();closeMo('conf-mo');showA('ลบสำเร็จ','inf');
+    locs[k]=null;document.getElementById('nm-'+k).value='';document.getElementById('rad-'+k).value=150;document.getElementById('rv-'+k).textContent=150;
+    localStorage.setItem('wt_locs',JSON.stringify(locs));refreshLocs();updateGPS();closeMo('conf-mo');showA('ลบสำเร็จ','inf');
   };
   document.getElementById('conf-mo').classList.add('open');
 }
 function refreshLocs(){
   document.getElementById('lbl-a').textContent=lname('a')||'ที่ทำงาน A';
   document.getElementById('lbl-b').textContent=lname('b')||'ที่ทำงาน B';
+  document.getElementById('opt-a').textContent=lname('a')||'ที่ทำงาน A';
+  document.getElementById('opt-b').textContent=lname('b')||'ที่ทำงาน B';
   document.getElementById('del-a').style.display=locs.a?'flex':'none';
   document.getElementById('del-b').style.display=locs.b?'flex':'none';
   ['a','b'].forEach(k=>{
     const el=document.getElementById('lst-'+k);
-    if(locs[k]?.lat){el.className='lst sv';el.innerHTML=`<b>${locs[k].name}</b><br>GPS: ${locs[k].lat.toFixed(5)}, ${locs[k].lng.toFixed(5)}<br>รัศมี: ${locs[k].radius} ม.`}
-    else if(locs[k]?.name){el.className='lst';el.innerHTML=`<b>${locs[k].name}</b><br><span style="color:var(--rd)">ยังไม่ได้บันทึก GPS</span>`}
+    if(locs[k]?.lat){el.className='lst saved';el.innerHTML=`<b>${locs[k].name}</b><br>GPS: ${locs[k].lat.toFixed(5)}, ${locs[k].lng.toFixed(5)}<br>รัศมี: ${locs[k].radius} ม.`}
+    else if(locs[k]?.name){el.className='lst';el.innerHTML=`<b>${locs[k].name}</b><br><span style="color:var(--rdark)">ยังไม่ได้บันทึก GPS</span>`}
     else{el.className='lst';el.textContent='ยังไม่ได้บันทึกตำแหน่ง'}
   });
 }
 
-// ===== RECORDS =====
+// RECORDS
 async function loadRecords(){
   document.getElementById('log-list').innerHTML='<div class="loading">กำลังโหลด...</div>';
   try{
     const res=await fetch(`${SCRIPT_URL}?action=get&user=${encodeURIComponent(username)}`);
     const data=await res.json();
-    records=data.map(r=>({
-      ts:String(r.timestamp),type:r.type,ds:String(r.dateStr),
-      loc:r.location||null,lateMin:r.lateMin!==''?parseInt(r.lateMin)||0:null
-    }));
+    records=data.map(r=>({ts:String(r.timestamp),type:r.type,ds:String(r.dateStr),loc:r.location||null,lateMin:r.lateMin!==''?parseInt(r.lateMin)||0:null}));
     const s=[...records].sort((a,b)=>b.ts.localeCompare(a.ts));
     isIn=s.length>0&&s[0].type==='in';
     localStorage.setItem('wt_in',isIn?'1':'0');
     updateUI();renderLog();renderShift();
-  }catch(e){
-    document.getElementById('log-list').innerHTML='<div class="empty">โหลดข้อมูลไม่ได้<br>ตรวจสอบอินเทอร์เน็ตค่ะ</div>';
-  }
+  }catch(e){document.getElementById('log-list').innerHTML='<div class="empty">โหลดข้อมูลไม่ได้<br>ตรวจสอบอินเทอร์เน็ตค่ะ</div>'}
 }
-async function send(action){
+
+async function sendRecord(action,opts={}){
   const k=detLoc();
-  const url=`${SCRIPT_URL}?action=${action}&user=${encodeURIComponent(username)}&loc=${encodeURIComponent(k||'')}&lat=${pos?.latitude||''}&lng=${pos?.longitude||''}&start=${encodeURIComponent(startTime)}`;
-  try{const r=await fetch(url);return(await r.text()).trim()==='ok'}catch(e){return false}
+  const params=new URLSearchParams({action,user:username,loc:opts.loc||k||'',lat:opts.lat||pos?.latitude||'',lng:opts.lng||pos?.longitude||'',start:startTime,...opts});
+  try{const r=await fetch(`${SCRIPT_URL}?${params}`);return(await r.text()).trim()==='ok'}catch(e){return false}
 }
 
 async function checkIn(){
-  document.getElementById('btn-in').disabled=true;
-  showA('กำลังบันทึก...','inf');
-  if(await send('in')){
-    isIn=true;localStorage.setItem('wt_in','1');
-    const n=new Date();showA('เช็คอินสำเร็จ '+pad(n.getHours())+':'+pad(n.getMinutes()),'ok');
-    await loadRecords();
-  }else{showA('บันทึกไม่สำเร็จ ตรวจสอบอินเทอร์เน็ตค่ะ','err');document.getElementById('btn-in').disabled=false}
+  document.getElementById('btn-in').disabled=true;showA('กำลังบันทึก...','inf');
+  if(await sendRecord('in')){isIn=true;localStorage.setItem('wt_in','1');const n=new Date();showA('เช็คอินสำเร็จ '+pad(n.getHours())+':'+pad(n.getMinutes()),'ok');await loadRecords()}
+  else{showA('บันทึกไม่สำเร็จ ตรวจสอบอินเทอร์เน็ตค่ะ','err');document.getElementById('btn-in').disabled=false}
 }
 async function checkOut(){
-  document.getElementById('btn-out').disabled=true;
-  showA('กำลังบันทึก...','inf');
-  if(await send('out')){
-    isIn=false;localStorage.setItem('wt_in','0');
-    const n=new Date();showA('เช็คเอาท์สำเร็จ '+pad(n.getHours())+':'+pad(n.getMinutes()),'ok');
-    await loadRecords();
-  }else{showA('บันทึกไม่สำเร็จ ตรวจสอบอินเทอร์เน็ตค่ะ','err');document.getElementById('btn-out').disabled=false}
+  document.getElementById('btn-out').disabled=true;showA('กำลังบันทึก...','inf');
+  if(await sendRecord('out')){isIn=false;localStorage.setItem('wt_in','0');const n=new Date();showA('เช็คเอาท์สำเร็จ '+pad(n.getHours())+':'+pad(n.getMinutes()),'ok');await loadRecords()}
+  else{showA('บันทึกไม่สำเร็จ ตรวจสอบอินเทอร์เน็ตค่ะ','err');document.getElementById('btn-out').disabled=false}
 }
 
 function updateUI(){
-  const bi=document.getElementById('btn-in'),bo=document.getElementById('btn-out');
-  const ic=document.getElementById('st-ic'),tx=document.getElementById('st-txt');
-  if(isIn){ic.style.color='var(--green)';tx.textContent='กำลังทำงาน';bi.disabled=true;bo.disabled=false}
-  else{ic.style.color='var(--muted)';tx.textContent='ออกงานแล้ว / ยังไม่เช็คอิน';bi.disabled=false;bo.disabled=true}
+  const bi=document.getElementById('btn-in'),bo=document.getElementById('btn-out'),ic=document.getElementById('st-ic'),tx=document.getElementById('st-txt');
+  if(isIn){ic.style.color='var(--gn)';tx.textContent='กำลังทำงาน';bi.disabled=true;bo.disabled=false}
+  else{ic.style.color='var(--mu)';tx.textContent='ออกงานแล้ว / ยังไม่เช็คอิน';bi.disabled=false;bo.disabled=true}
   updateSum();
 }
 function updateSum(){
@@ -476,32 +398,28 @@ function updateSum(){
   const fi=inR[0],lo=outR.slice(-1)[0];
   document.getElementById('s-in').textContent=fi?fmtT(fi.ts):'-';
   document.getElementById('s-out').textContent=lo?fmtT(lo.ts):'-';
-  if(fi&&lo)document.getElementById('s-hrs').textContent=((new Date(lo.ts)-new Date(fi.ts))/3600000).toFixed(1)+' ชม.';
+  if(fi&&lo)document.getElementById('s-hrs').textContent=((parseTs(lo.ts)-parseTs(fi.ts))/3600000).toFixed(1)+' ชม.';
   else document.getElementById('s-hrs').textContent='-';
   if(fi&&fi.lateMin!=null){const l=fi.lateMin;document.getElementById('s-late').textContent=l>0?l+' นาที':'ตรงเวลา';document.getElementById('s-late').className='sv'+(l>0?' late':'')}
   else document.getElementById('s-late').textContent='-';
   if(fi)document.getElementById('last-ci').textContent=fmtT(fi.ts)+(fi.loc?' ('+lname(fi.loc)+')':'');
 }
+
 function renderLog(){
   const el=document.getElementById('log-list');
   if(!records.length){el.innerHTML='<div class="empty">ยังไม่มีข้อมูล</div>';return}
-  const s=[...records].sort((a,b)=>b.ts.localeCompare(a.ts));
-  // update loc dropdowns
-  document.getElementById('edit-loc-a').textContent=lname('a')||'ที่ทำงาน A';
-  document.getElementById('edit-loc-b').textContent=lname('b')||'ที่ทำงาน B';
-  el.innerHTML=s.map((r,i)=>{
+  sortedCache=[...records].sort((a,b)=>b.ts.localeCompare(a.ts));
+  el.innerHTML=sortedCache.map((r,i)=>{
     let dur='';
-    if(r.type==='out'){const p=s.slice(i+1).find(x=>x.type==='in'&&x.ds===r.ds);if(p)dur=((new Date(r.ts)-new Date(p.ts))/3600000).toFixed(1)+' ชม.'}
+    if(r.type==='out'){const p=sortedCache.slice(i+1).find(x=>x.type==='in'&&x.ds===r.ds);if(p)dur=((parseTs(r.ts)-parseTs(p.ts))/3600000).toFixed(1)+' ชม.'}
     const ln=r.loc?lname(r.loc):'';
     const lb=ln?`<span class="bdg b${r.loc}" style="font-size:11px;padding:1px 8px">${ln}</span>`:'';
     const late=r.type==='in'&&r.lateMin!=null?(r.lateMin>0?`<span class="bdg blate" style="font-size:11px;padding:1px 8px">สาย ${r.lateMin}น.</span>`:`<span class="bdg bok" style="font-size:11px;padding:1px 8px">ตรงเวลา</span>`):'';
-    return`<div class="rec"><div class="rdot" style="background:${r.type==='in'?'var(--green)':'var(--red)'}"></div><div class="ri"><div class="rt">${r.type==='in'?'เข้างาน':'ออกงาน'}${lb}${late}</div><div class="rs">${r.ts.slice(0,16).replace('T',' ')}${dur?' · '+dur:''}</div></div><div class="ra"><button class="ibtn" onclick="openEdit(${i})"><i class="ti ti-pencil"></i></button><button class="ibtn" onclick="confirmDel(${i})" style="color:var(--rd)"><i class="ti ti-trash"></i></button></div></div>`;
+    return`<div class="rec"><div class="rdot" style="background:${r.type==='in'?'var(--gn)':'var(--rd)'}"></div><div class="ri"><div class="rt">${r.type==='in'?'เข้างาน':'ออกงาน'}${lb}${late}</div><div class="rs">${r.ts.slice(0,16).replace('T',' ')}${dur?' · '+dur:''}</div></div><div class="ra"><button class="ibtn" onclick="openEdit(${i})"><i class="ti ti-pencil"></i></button><button class="ibtn" onclick="confirmDel(${i})" style="color:var(--rdark)"><i class="ti ti-trash"></i></button></div></div>`;
   }).join('');
 }
 
-// ===== EDIT / DELETE =====
-let sortedCache = [];
-
+// EDIT / ADD / DELETE
 function openAdd(){
   document.getElementById('edit-title').textContent='เพิ่มรายการใหม่';
   document.getElementById('edit-idx').value='-1';
@@ -509,38 +427,26 @@ function openAdd(){
   const n=new Date();
   document.getElementById('edit-dt').value=n.getFullYear()+'-'+pad(n.getMonth()+1)+'-'+pad(n.getDate())+'T'+pad(n.getHours())+':'+pad(n.getMinutes());
   document.getElementById('edit-loc').value='';
-  document.getElementById('edit-lat').value='';
-  document.getElementById('edit-lng').value='';
-  document.getElementById('edit-loc-a').textContent=lname('a')||'ที่ทำงาน A';
-  document.getElementById('edit-loc-b').textContent=lname('b')||'ที่ทำงาน B';
+  document.getElementById('edit-lat').value='';document.getElementById('edit-lng').value='';
   document.getElementById('edit-mo').classList.add('open');
 }
-
 function openEdit(i){
-  const s=[...records].sort((a,b)=>b.ts.localeCompare(a.ts));
-  sortedCache=s;
-  const r=s[i];
+  const r=sortedCache[i];
   document.getElementById('edit-title').textContent='แก้ไขข้อมูล';
   document.getElementById('edit-idx').value=i;
   document.getElementById('edit-type').value=r.type;
-  // convert ts to datetime-local format
-  const d=new Date(r.ts);
-  const local=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());
-  document.getElementById('edit-dt').value=local;
+  document.getElementById('edit-dt').value=toLocalDT(r.ts);
   document.getElementById('edit-loc').value=r.loc||'';
-  document.getElementById('edit-lat').value=r.lat||'';
-  document.getElementById('edit-lng').value=r.lng||'';
+  document.getElementById('edit-lat').value=r.lat||'';document.getElementById('edit-lng').value=r.lng||'';
   document.getElementById('edit-mo').classList.add('open');
 }
-
 function useGPS(){
   if(!pos){showA('GPS ยังไม่พร้อม','err');return}
   document.getElementById('edit-lat').value=pos.latitude.toFixed(6);
   document.getElementById('edit-lng').value=pos.longitude.toFixed(6);
 }
-
 async function saveEdit(){
-  const i=parseInt(document.getElementById('edit-idx').value);
+  const idx=parseInt(document.getElementById('edit-idx').value);
   const type=document.getElementById('edit-type').value;
   const dtVal=document.getElementById('edit-dt').value;
   const loc=document.getElementById('edit-loc').value||'';
@@ -552,54 +458,48 @@ async function saveEdit(){
   const newDs=dt.getFullYear()+'-'+pad(dt.getMonth()+1)+'-'+pad(dt.getDate());
   let lateMin=null;
   if(type==='in'){
-    const others=records.filter(x=>x.ds===newDs&&x.type==='in'&&(i>=0?x.ts!==sortedCache[i]?.ts:true));
+    const oldTs=idx>=0?sortedCache[idx]?.ts:'';
+    const others=records.filter(x=>x.ds===newDs&&x.type==='in'&&x.ts!==oldTs);
     if(others.length===0){const[sh,sm]=startTime.split(':').map(Number);lateMin=Math.max(0,dt.getHours()*60+dt.getMinutes()-sh*60-sm)}
   }
-
-  if(i>=0){
-    // แก้ไขรายการเดิม
-    const r=sortedCache[i];
-    const idx=records.findIndex(x=>x.ts===r.ts&&x.type===r.type&&x.ds===r.ds);
-    if(idx>=0)records[idx]={...records[idx],ts:newTs,type,ds:newDs,loc:loc||null,lateMin};
+  closeMo('edit-mo');showA('กำลังบันทึก...','inf');
+  if(idx>=0){
+    // แก้ไข
+    const r=sortedCache[idx];
     try{
-      const url=`${SCRIPT_URL}?action=update&user=${encodeURIComponent(username)}&oldts=${encodeURIComponent(r.ts)}&newts=${encodeURIComponent(newTs)}&type=${type}&ds=${newDs}&loc=${encodeURIComponent(loc)}&lat=${lat}&lng=${lng}&lateMin=${lateMin!==null?lateMin:''}`;
-      await fetch(url);
-    }catch(e){}
-    showA('แก้ไขสำเร็จค่ะ','ok');
+      const res=await fetch(`${SCRIPT_URL}?action=update&user=${encodeURIComponent(username)}&oldts=${encodeURIComponent(r.ts)}&newts=${encodeURIComponent(newTs)}&type=${type}&ds=${newDs}&loc=${encodeURIComponent(loc)}&lat=${lat}&lng=${lng}&lateMin=${lateMin!==null?lateMin:''}`);
+      const txt=await res.text();
+      if(txt.trim()==='ok'){showA('แก้ไขสำเร็จค่ะ','ok')}
+      else{showA('แก้ไขไม่สำเร็จ: '+txt,'err');return}
+    }catch(e){showA('เชื่อมต่อไม่ได้','err');return}
   } else {
-    // เพิ่มรายการใหม่
-    const newRec={ts:newTs,type,ds:newDs,loc:loc||null,lat:lat||null,lng:lng||null,lateMin};
-    records.push(newRec);
+    // เพิ่มใหม่
     try{
-      const url=`${SCRIPT_URL}?action=${type}&user=${encodeURIComponent(username)}&loc=${encodeURIComponent(loc)}&lat=${lat}&lng=${lng}&start=${encodeURIComponent(startTime)}&manualts=${encodeURIComponent(newTs)}`;
-      await fetch(url);
-    }catch(e){}
-    showA('เพิ่มรายการสำเร็จค่ะ','ok');
+      const res=await fetch(`${SCRIPT_URL}?action=${type}&user=${encodeURIComponent(username)}&loc=${encodeURIComponent(loc)}&lat=${lat}&lng=${lng}&start=${encodeURIComponent(startTime)}&manualts=${encodeURIComponent(newTs)}`);
+      const txt=await res.text();
+      if(txt.trim()==='ok'){showA('เพิ่มรายการสำเร็จค่ะ','ok')}
+      else{showA('เพิ่มไม่สำเร็จ: '+txt,'err');return}
+    }catch(e){showA('เชื่อมต่อไม่ได้','err');return}
   }
-
-  closeMo('edit-mo');
-  const s=[...records].sort((a,b)=>b.ts.localeCompare(a.ts));
-  isIn=s.length>0&&s[0].type==='in';
-  localStorage.setItem('wt_in',isIn?'1':'0');
-  updateUI();renderLog();renderShift();
+  // โหลดข้อมูลใหม่จาก Sheet เพื่อให้แน่ใจว่าอัปเดตแล้ว
+  await loadRecords();
 }
-
 function confirmDel(i){
-  const s=[...records].sort((a,b)=>b.ts.localeCompare(a.ts));
-  sortedCache=s;
-  const r=s[i];
+  const r=sortedCache[i];
   document.getElementById('conf-title').textContent='ลบรายการ';
   document.getElementById('conf-msg').textContent=`ยืนยันลบ "${r.type==='in'?'เข้างาน':'ออกงาน'}" วันที่ ${r.ts.slice(0,16)} ?`;
   document.getElementById('conf-ok').onclick=async()=>{
     records=records.filter(x=>!(x.ts===r.ts&&x.type===r.type&&x.ds===r.ds));
     try{await fetch(`${SCRIPT_URL}?action=delete&user=${encodeURIComponent(username)}&ts=${encodeURIComponent(r.ts)}&type=${r.type}`)}catch(e){}
-    const sv=[...records].sort((a,b)=>b.ts.localeCompare(a.ts));
-    isIn=sv.length>0&&sv[0].type==='in';
+    const s=[...records].sort((a,b)=>b.ts.localeCompare(a.ts));
+    isIn=s.length>0&&s[0].type==='in';
     localStorage.setItem('wt_in',isIn?'1':'0');
     updateUI();renderLog();renderShift();closeMo('conf-mo');showA('ลบสำเร็จค่ะ','inf');
   };
   document.getElementById('conf-mo').classList.add('open');
 }
+
+// SHIFT
 function getShiftKey(ds){const[y,m,d]=ds.split('-').map(Number);if(d>=16){const nm=m===12?1:m+1,ny=m===12?y+1:y;return ny+'-'+pad(nm)}return y+'-'+pad(m)}
 function getShiftRange(key){const[y,m]=key.split('-').map(Number);const pm=m===1?12:m-1,py=m===1?y-1:y;return{s:new Date(py,pm-1,16),e:new Date(y,m-1,15,23,59,59)}}
 function shiftByOff(o){const b=getShiftKey(today());const[y,m]=b.split('-').map(Number);let nm=m+o,ny=y;while(nm>12){nm-=12;ny++}while(nm<1){nm+=12;ny--}return ny+'-'+pad(nm)}
@@ -607,7 +507,7 @@ function shiftLbl(k){const{s,e}=getShiftRange(k);const f=d=>pad(d.getDate())+' '
 function shiftTit(k){const[y,m]=k.split('-').map(Number);return'รอบเวร '+MF[m-1]+' '+(y+543)}
 function getShiftData(key){
   const{s,e}=getShiftRange(key),days={};
-  records.filter(r=>new Date(r.ts)>=s&&new Date(r.ts)<=e).forEach(r=>{
+  records.filter(r=>parseTs(r.ts)>=s&&parseTs(r.ts)<=e).forEach(r=>{
     if(!days[r.ds])days[r.ds]={in:[],out:[]};
     if(r.type==='in')days[r.ds].in.push(r);else days[r.ds].out.push(r);
   });
@@ -623,7 +523,7 @@ function renderShift(){
     const fi=d.in.sort((a,b)=>a.ts.localeCompare(b.ts))[0];
     const lo=d.out.sort((a,b)=>a.ts.localeCompare(b.ts)).slice(-1)[0];
     if(fi)wd++;const late=fi?.lateMin||0;tl+=late;if(late>0)ld++;
-    if(fi&&lo)th+=(new Date(lo.ts)-new Date(fi.ts))/3600000;
+    if(fi&&lo)th+=(parseTs(lo.ts)-parseTs(fi.ts))/3600000;
   });
   document.getElementById('m-sum').innerHTML=`
     <div class="mc"><div class="mcl">วันที่ทำงาน</div><div class="mcv">${wd} วัน</div></div>
@@ -631,13 +531,13 @@ function renderShift(){
     <div class="mc"><div class="mcl">มาสายรวม</div><div class="mcv late">${tl} นาที</div></div>
     <div class="mc"><div class="mcl">วันที่มาสาย</div><div class="mcv late">${ld} วัน</div></div>`;
   const tb=document.getElementById('m-detail');
-  if(!sorted.length){tb.innerHTML='<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--muted)">ไม่มีข้อมูล</td></tr>';return}
+  if(!sorted.length){tb.innerHTML='<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--mu)">ไม่มีข้อมูล</td></tr>';return}
   tb.innerHTML=sorted.map(ds=>{
     const d=days[ds];
     const fi=d.in.sort((a,b)=>a.ts.localeCompare(b.ts))[0];
     const lo=d.out.sort((a,b)=>a.ts.localeCompare(b.ts)).slice(-1)[0];
     const[,,dd]=ds.split('-'),dn=DAYS[new Date(ds).getDay()].slice(0,2);
-    let hrs='-';if(fi&&lo)hrs=((new Date(lo.ts)-new Date(fi.ts))/3600000).toFixed(1);
+    let hrs='-';if(fi&&lo)hrs=((parseTs(lo.ts)-parseTs(fi.ts))/3600000).toFixed(1);
     const late=fi?.lateMin||0;
     const ls=fi?(late>0?`<span class="bdg blate" style="font-size:10px;padding:1px 6px">+${late}น.</span>`:`<span class="bdg bok" style="font-size:10px;padding:1px 6px">ตรง</span>`):'';
     return`<tr><td>${dd} ${dn}</td><td>${fi?fmtT(fi.ts):'-'}</td><td>${lo?fmtT(lo.ts):'-'}</td><td>${hrs}</td><td>${ls}</td></tr>`;
@@ -653,7 +553,7 @@ function printPDF(){
     const fi=d.in.sort((a,b)=>a.ts.localeCompare(b.ts))[0];
     const lo=d.out.sort((a,b)=>a.ts.localeCompare(b.ts)).slice(-1)[0];
     const[,mm,dd]=ds.split('-'),dn=DAYS[new Date(ds).getDay()];
-    let hrs='';if(fi&&lo){hrs=((new Date(lo.ts)-new Date(fi.ts))/3600000).toFixed(2);th+=parseFloat(hrs)}
+    let hrs='';if(fi&&lo){hrs=((parseTs(lo.ts)-parseTs(fi.ts))/3600000).toFixed(2);th+=parseFloat(hrs)}
     if(fi)wd++;const late=fi?.lateMin||0;tl+=late;if(late>0)ld++;
     return`<tr><td>${dd}/${mm}</td><td>${dn}</td><td>${fi?fmtT(fi.ts):'-'}</td><td>${lo?fmtT(lo.ts):'-'}</td><td>${hrs||'-'}</td><td style="color:${late>0?'#993C1D':'#0F6E56'}">${late>0?'+'+late+'น.':'ตรงเวลา'}</td></tr>`;
   }).join('');
@@ -667,17 +567,13 @@ function printPDF(){
   const w=window.open('','_blank');w.document.write(html);w.document.close();
 }
 
-// ===== UTILS =====
-function showA(msg,type){
-  const el=document.getElementById('alrt');
-  el.textContent=msg;el.className='alrt '+type;el.style.display='block';
-  setTimeout(()=>el.style.display='none',3500);
-}
+// UTILS
+function showA(msg,type){const el=document.getElementById('alrt');el.textContent=msg;el.className='alrt '+type;el.style.display='block';setTimeout(()=>el.style.display='none',3500)}
 function closeMo(id){document.getElementById(id).classList.remove('open')}
 function updateClock(){
   const n=new Date();
   document.getElementById('clk').textContent=pad(n.getHours())+':'+pad(n.getMinutes())+':'+pad(n.getSeconds());
-  document.getElementById('clk-date').textContent='วัน'+DAYS[n.getDay()]+' '+pad(n.getDate())+'/'+pad(n.getMonth()+1)+'/'+(n.getFullYear()+543);
+  document.getElementById('cdate').textContent='วัน'+DAYS[n.getDay()]+' '+pad(n.getDate())+'/'+pad(n.getMonth()+1)+'/'+(n.getFullYear()+543);
   document.getElementById('live-date').textContent=pad(n.getDate())+'/'+pad(n.getMonth()+1)+'/'+(n.getFullYear()+543);
 }
 function switchTab(name){
@@ -689,7 +585,7 @@ function switchTab(name){
   if(name==='month')loadRecords().then(()=>renderShift());
 }
 
-// ===== INIT =====
+// INIT
 function initApp(){
   document.getElementById('uname').textContent=username;
   document.getElementById('log-uname').textContent=username;
@@ -702,11 +598,8 @@ function initApp(){
   updateGPS();updateUI();loadRecords();
 }
 
-if(!username){
-  document.getElementById('lgs').classList.add('show');
-} else {
-  initApp();
-}
+if(!username){document.getElementById('lgs').classList.add('show')}
+else{initApp()}
 </script>
 </body>
 </html>
